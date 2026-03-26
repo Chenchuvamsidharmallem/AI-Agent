@@ -58,6 +58,7 @@ Grounded Final Answer
 ```text
 ai_data_analyst_agent/
 |-- app.py
+|-- startup.sh
 |-- requirements.txt
 |-- .env.example
 |-- README.md
@@ -69,6 +70,7 @@ ai_data_analyst_agent/
 |   |   |-- quarterly_summary.txt
 |   |   |-- product_notes.txt
 |-- src/
+|   |-- bootstrap.py
 |   |-- create_database.py
 |   |-- build_vector_store.py
 |   |-- db_utils.py
@@ -194,6 +196,40 @@ streamlit run app.py
 - Chroma store not found: run `python src/build_vector_store.py`.
 - Import errors: confirm the virtual environment is activated and dependencies are installed.
 - Weak answers: inspect the SQL query or retrieved documents in the app's debug expander.
+
+## Azure Deployment
+
+This project is ready to deploy to **Azure App Service on Linux** with a custom startup command.
+
+### Azure settings
+
+Use these App Settings in Azure:
+
+```text
+OPENAI_API_KEY=<your_key>
+OPENAI_MODEL=gpt-4o-mini
+EMBEDDING_MODEL=text-embedding-3-small
+DATABASE_URL=sqlite:////home/data/ai_data_analyst_agent/sales.db
+CHROMA_PERSIST_DIRECTORY=/home/data/ai_data_analyst_agent/chroma_store
+TOP_K_RESULTS=3
+WEBSITES_ENABLE_APP_SERVICE_STORAGE=true
+```
+
+### Azure startup command
+
+Set the App Service startup command to:
+
+```bash
+bash startup.sh
+```
+
+This script:
+
+1. creates the SQLite database if it is missing,
+2. builds the Chroma vector store if it is missing,
+3. starts Streamlit on the Azure-provided port.
+
+See [docs/AZURE_APP_SERVICE_DEPLOYMENT.md](/Users/vamsimallem/Documents/ai_data_analyst_agent:/docs/AZURE_APP_SERVICE_DEPLOYMENT.md) for the full Azure deployment walkthrough.
 
 ## Future Improvements
 

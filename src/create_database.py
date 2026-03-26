@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 from sqlalchemy import (
@@ -16,7 +17,6 @@ from sqlalchemy import (
 )
 
 BASE_DIR = Path(__file__).resolve().parents[1]
-DATABASE_PATH = BASE_DIR / "data" / "sales.db"
 
 metadata = MetaData()
 
@@ -313,20 +313,40 @@ SAMPLE_SALES_DATA = [
 ]
 
 
-def create_database() -> None:
-    """Create the SQLite database and populate it with sample records."""
-    DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    if DATABASE_PATH.exists():
-        DATABASE_PATH.unlink()
+def resolve_database_path() -> Path:
+    """Return the database file path, supporting Azure-style absolute SQLite URLs."""
+    raw_url = os.getenv("DATABASE_URL")
+    if not raw_url:
+        return BASE_DIR / "data" / "sales.db"
 
-    engine = create_engine(f"sqlite:///{DATABASE_PATH}")
+    if not raw_url.startswith("sqlite:///"):
+        raise ValueError("This project currently supports only SQLite DATABASE_URL values.")
+
+    raw_path = raw_url.removeprefix("sqlite:///")
+    path = Path(raw_path)
+    return path if path.is_absolute() else BASE_DIR / path
+
+
+def create_database(*, overwrite: bool = True) -> Path:
+    """Create the SQLite database and populate it with sample records."""
+    database_path = resolve_database_path()
+    database_path.parent.mkdir(parents=True, exist_ok=True)
+
+    if database_path.exists():
+        if not overwrite:
+            print(f"Database already exists at: {database_path}")
+            return database_path
+        database_path.unlink()
+
+    engine = create_engine(f"sqlite:///{database_path}")
     metadata.create_all(engine)
 
     with engine.begin() as connection:
         connection.execute(sales_table.insert(), SAMPLE_SALES_DATA)
 
-    print(f"Database created at: {DATABASE_PATH}")
+    print(f"Database created at: {database_path}")
     print(f"Inserted {len(SAMPLE_SALES_DATA)} rows into the sales table.")
+    return database_path
 
 
 if __name__ == "__main__":
