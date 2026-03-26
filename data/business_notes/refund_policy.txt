@@ -1,0 +1,7 @@
+Refund Policy
+
+Customers can request a refund within 30 calendar days of purchase for standard plans.
+Enterprise customers may request a refund review within 45 days when onboarding blockers are documented.
+Refund requests related to missing analytics features should be routed to customer success before approval.
+If the issue is caused by implementation confusion, the support team should offer a guided setup session first.
+Full refunds are usually approved when the product cannot meet a documented customer requirement.

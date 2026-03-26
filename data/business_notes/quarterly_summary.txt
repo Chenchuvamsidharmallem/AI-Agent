@@ -1,0 +1,7 @@
+Quarterly Summary
+
+The sales team reported strongest momentum in enterprise forecasting products during Q1 2025.
+West region pipeline quality improved after a new outbound campaign launched in February.
+Leadership noted that SMB churn was higher when customers expected premium reporting features from lower-tier plans.
+Operations wants analysts to flag any region with both high revenue and rising return counts for review.
+The Q2 priority is to reduce confusion during implementation and improve activation for Dashboard Plus customers.

@@ -1,0 +1,7 @@
+Product Notes
+
+Insight Pro is the premium analytics offering and is usually sold to enterprise or mid-market customers.
+Insight Lite is the lower-cost entry product and often attracts SMB buyers who may later upgrade.
+Forecast AI has strong demand among finance teams because it improves planning visibility.
+Dashboard Plus customers sometimes need extra onboarding support for integrations and reporting setup.
+Sales leadership encourages bundling training sessions with Dashboard Plus deals when the customer is new to BI tooling.
